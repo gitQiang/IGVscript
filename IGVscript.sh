@@ -45,8 +45,8 @@ do
 	let "END=$VALUE + 25"
 	outputf=`echo  $DIR$NAME.$START.$END.$SAMPLE.png`
 	#echo $outputf
-	if [ ! -f $outputf ]; then
-		if [[ ($kk -gt 1  &&  "$BAMS0" != "$BAMS" ) ||  $kk -eq 1 ]] ;then
+	if [[ ! -f $outputf ]];then
+		if [[ ($kk -gt 1  &&  "$BAMS0" != "$BAMS" ) ||  $kk -eq 1 ]];then
 			printf "new\n" >> $SCRF
 			printf "genome hg19\n"  >> $SCRF
 			printf "load  $BAMS\n" >> $SCRF
