@@ -1,8 +1,7 @@
 #!/bin/bash 
 
 ### input information
-BAMFILE="/Volumes/BigData/WENDY/BreastCancer/Regeneron/bams/" ## bam file directory
-INDELS="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/allcheck/igvfile.txt" ## indels files
+INDELS="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/indels.txt" ## indels files
 BAM="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/bams_9_24.txt" ## bam files
 DIR="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/SnapshotCheck/" ## figure output folder
 
@@ -42,40 +41,38 @@ do
 	done
 	#echo $i
 	
-	
-	if [[ $kk -gt 1 ]];then
-		if [[  "$BAMS0" != "$BAMS" ]];then
-			printf "new\n" >> $SCRF
-			printf "genome hg19\n"  >> $SCRF
-			printf "load  $BAMS\n" >> $SCRF
-			printf "snapshotDirectory $DIR \n" >>  $SCRF
-		fi
-	else
+	let "START=$VALUE - 25"
+	let "END=$VALUE + 25"
+	outputf=`echo  $DIR$NAME.$START.$END.$SAMPLE.png`
+	#echo $outputf
+	if [ ! -f $outputf ]; then
+		if [[ ($kk -gt 1  &&  "$BAMS0" != "$BAMS" ) ||  $kk -eq 1 ]] ;then
 			printf "new\n" >> $SCRF
 			printf "genome hg19\n"  >> $SCRF
 			printf "load  $BAMS\n" >> $SCRF
 			printf "snapshotDirectory $DIR \n" >>  $SCRF	
+		fi
+	
+		printf "goto chr$NAME:$START-$END \n" >> $SCRF
+		printf "sort position \n" >> $SCRF
+		#printf "expand \n" >> $SCRF	
+		printf "collapse \n" >> $SCRF
+		#printf "squish \n" >> $SCRF
+		#printf "viewaspairs \n" >> $SCRF
+		printf "maxPanelHeight 2000 \n" >> $SCRF
+		printf "snapshot $NAME.$START.$END.$SAMPLE.png \n" >> $SCRF
+		printf "\n" >> $SCRF
+		
+		let kk+=1
+		BAMS0=$BAMS
 	fi
-	
-	BAMS0=$BAMS
-	
-	let "START=$VALUE - 25"
-	let "END=$VALUE + 25"
-	printf "goto chr$NAME:$START-$END \n" >> $SCRF
-	printf "sort position \n" >> $SCRF
-	#printf "expand \n" >> $SCRF	
-	printf "collapse \n" >> $SCRF
-	#printf "squish \n" >> $SCRF
-	#printf "viewaspairs \n" >> $SCRF
-	printf "maxPanelHeight 2000 \n" >> $SCRF
-	printf "snapshot $NAME.$START.$END.$SAMPLE.png \n" >> $SCRF
-	printf "\n" >> $SCRF
-	
-	let kk+=1
 done < "$INDELS"
-
 printf "exit \n" >> $SCRF
+
 ## run IGV
-$IGVR  -g hg19 -b $SCRF	
-rm $SCRF	
+NUMLINES=$(wc -l < "$SCRF")
+if [[ $NUMLINES -gt 10 ]];then
+	$IGVR  -g hg19 -b $SCRF	
+	rm $SCRF
+fi
 	
