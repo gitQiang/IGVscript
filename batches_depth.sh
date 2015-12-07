@@ -6,6 +6,7 @@ BAM="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/bams_12_4.txt"  ## bam fi
 REF="/Volumes/TwoT/Desktop/tools/references/b37/human_g1k_v37.fasta" ## reference genome
 dirhq="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/depthoutput/" ## output files
 FILES=IGVs_single_gene/*IGVs.txt
+##FILES="IGVs_single_gene/PTPRF_1_44063417_AG_CG_IGVs.txt"
 
 for TARGET in $FILES;
 do

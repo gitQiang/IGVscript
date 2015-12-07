@@ -34,3 +34,35 @@ samtools mpileup -ugf $REF -r $Tg -t DP,DV,DPR,INFO/DPR,DP4,SP $BAMS | bcftools 
 
 ## vcftools depth in all sites and samples
 vcftools --vcf $dirhq$GENE-$Tg.vcf --geno-depth --out $dirhq$GENE-$Tg
+
+
+: <<'END'
+## format PL:DP:DV:SP:DP4:DPR
+N=2 ## extract DP
+TMPF=`echo $dirhq$GENE-$Tg.depth.txt`
+touch $TMPF
+
+k=1
+while read line
+do
+	if [[ ( "${line:0:2}" != "##" ) && ( $k -eq 1 ) ]]; then
+		printf "$line \n" >> $TMPF
+		let k+=1
+	elif [[ $k -gt 1 ]]; then
+		STRS=(${line//'\t'/ })
+		i=1
+		newline=""
+		for ONE in "${!STRS[@]}";
+ 		do	
+			if [[ $i -gt 9 ]];then
+				DP=`echo ${STRS[ONE]} | cut -d ':' -f $N`
+				newline=`echo $newline	$DP`
+			else
+				newline=`echo $newline	${STRS[ONE]}`
+			fi
+			let i+=1
+		done
+		printf "$newline \n" >> $TMPF
+	fi
+done < "$dirhq$GENE-$Tg.vcf"
+END
