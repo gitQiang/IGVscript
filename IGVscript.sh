@@ -1,9 +1,9 @@
 #!/bin/bash 
 
 ### input information
-INDELS="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/indels.txt" ## indels files
-BAM="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/bams_9_24.txt" ## bam files
-DIR="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/SnapshotCheck/" ## figure output folder
+INDELS="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/variants_IGVsone.txt" ## indels files
+BAM="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/bams_12_4.txt" ## bam files
+DIR="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/" ## figure output folder
 
 ###=========================================================
 IGVR="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/igv.sh" ## igv 
@@ -29,6 +29,8 @@ do
 	for ONE in $SAMS;
  	do	
  		ONEBAM=`grep $ONE $BAM`
+ 		ONEBAM=`echo ${ONEBAM//[[:space:]]/,}`
+ 		#echo $ONEBAM
 		if [[ "$ONEBAM" != "" ]]
 		then
 			if [[ $i -gt 1 ]]; then
@@ -39,7 +41,7 @@ do
 		fi
 		let i+=1	
 	done
-	#echo $i
+	#echo $BAMS
 	
 	let "START=$VALUE - 25"
 	let "END=$VALUE + 25"
