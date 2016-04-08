@@ -1,9 +1,9 @@
 #!/bin/bash 
 
 ### input information
-INDELS="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/variants_IGVsone.txt" ## indels files
-BAM="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/bams_12_4.txt" ## bam files
-DIR="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/" ## figure output folder
+INDELS=$1 ## indels files
+BAM=$2 ## bam files
+DIR=$3 ## figure output folder
 
 ###=========================================================
 IGVR="/Volumes/TwoT/Desktop/breastcancer/IGV/IGV_2.3.57/igv.sh" ## igv 
